@@ -2,7 +2,7 @@
 
 # AI-Powered Cricket Cover Drive Analysis 🏏
 
-This project implements a comprehensive real-time analysis system for cricket cover drive biomechanics, developed as part of the AthleteRise AI-Powered Cricket Analytics assignment. The system processes full videos frame-by-frame to provide live feedback and comprehensive performance evaluation.
+This project implements a comprehensive real-time analysis system for cricket cover drive biomechanics, The system processes full videos frame-by-frame to provide live feedback and comprehensive performance evaluation.
 
 ## 🎯 Project Overview
 
@@ -52,7 +52,7 @@ This system analyzes cricket cover drive videos using computer vision and pose e
 ## 🚀 Getting Started
 
 ### Prerequisites
-- Python 3.7+
+- Python 3.11
 - MediaPipe
 - OpenCV
 - Streamlit
@@ -79,7 +79,7 @@ This system analyzes cricket cover drive videos using computer vision and pose e
 
 ## 🎬 Usage
 
-### Web Application (Recommended)
+### Web Application 
 1. **Start the Streamlit app:**
    ```bash
    streamlit run app.py
@@ -109,7 +109,6 @@ The system generates comprehensive outputs in the `/output/` directory:
 - **`smoothness_chart.png`**: Elbow angle visualization throughout the swing
 - **`batline_plot.png`**: Bat path analysis and deviation metrics
 - **`final_report.html`**: Comprehensive HTML report with all results
-- **`uploaded_video.mp4`**: Original uploaded video (if using web app)
 
 ## ⚙️ Configuration
 
@@ -173,10 +172,6 @@ The `config.json` file allows customization of:
 - **Resolution**: Minimum 720p recommended
 - **Duration**: Full swing from stance to follow-through
 
-### Supported Formats
-- MP4 (recommended)
-- MOV
-- AVI
 
 ## 🔧 Technical Limitations
 
@@ -190,26 +185,3 @@ The `config.json` file allows customization of:
 - **Processing Speed**: Real-time analysis on modern hardware
 - **Memory Usage**: Efficient frame-by-frame processing
 - **GPU Support**: Optional GPU acceleration for pose detection
-
-## 🤝 Contributing
-
-This project is developed as part of the AthleteRise assignment. Contributions and improvements are welcome:
-
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Submit a pull request
-
-## 📄 License
-
-This project is developed for educational and research purposes as part of the AthleteRise AI-Powered Cricket Analytics assignment.
-
-## 🙏 Acknowledgments
-
-- **MediaPipe**: For real-time pose estimation capabilities
-- **AthleteRise**: For the cricket analytics assignment and requirements
-- **Open Source Community**: For the various libraries and tools used
-
----
-
-*Built with ❤️ for cricket analytics and biomechanical research*
