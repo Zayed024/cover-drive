@@ -1,0 +1,28 @@
+{
+  "Footwork": {
+    "score": 5,
+    "feedback": "Front foot a bit closed/open; point the toe more towards the ball."
+  },
+  "Head Position": {
+    "score": 9,
+    "feedback": "Stable head position over the front knee at impact."
+  },
+  "Swing Control": {
+    "score": 9,
+    "feedback": "High elbow (179\u00b0) supporting a controlled downswing."
+  },
+  "Balance": {
+    "score": 5,
+    "feedback": "Noticeable lateral lean; stay taller over the ball."
+  },
+  "Follow-through": {
+    "score": 8,
+    "feedback": "Nice extension through the ball."
+  },
+  "smoothness": {
+    "std_dev": 41.43679448447492,
+    "rms_jerk": 161851.26168278873,
+    "smoothness_score": 0.0
+  },
+  "skill_grade": "Intermediate"
+}

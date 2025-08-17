@@ -1,0 +1,44 @@
+{
+    "video_url": "https://youtube.com/shorts/vSX3IRxGnNY",
+    "input_video_path": "input_video.mp4",
+    "output_dir": "output",
+    "output_video_name": "annotated_video_advanced.mp4",
+    "evaluation_file_name": "evaluation_report.json",
+    "chart_file_name": "smoothness_chart.png",
+    "report_file_name": "final_report.html",
+    "pose_confidence": 0.5,
+    "enable_gpu": false,
+    "model_complexity": 1,
+    "thresholds": {
+        "good_elbow_elevation": 100,
+        "head_alignment_max_pixels": 50
+    },
+    "ideal_ranges": {
+    "max_elbow_angle": {"min": 120, "max": 180},
+    "head_alignment_at_impact": {"max": 50},
+    "foot_angle_at_impact": {"min": 50, "max": 85}
+},
+    "phase_detection": {
+  "speed_min_frac": 0.35,
+  "smooth_ms": 80,
+  "refine_ms": 50
+},
+"batline": {
+  "use_frames_after_impact": 3,
+  "min_points_for_line": 6
+},
+"reference_stats_path": "",   
+"ideal_template": {
+  "elbow_at_impact_mean": 140,
+  "elbow_at_impact_std": 8,
+  "foot_angle_mean": 65,
+  "foot_angle_std": 8,
+  "head_alignment_mean": 30,
+  "head_alignment_std": 10,
+  "batline_rms_mean": 8.0,
+  "batline_rms_std": 4.0,
+  "wrist_speed_mean": 1200,
+  "wrist_speed_std": 400
+}
+
+}
