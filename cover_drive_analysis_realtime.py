@@ -5,12 +5,63 @@ import matplotlib.pyplot as plt
 import math
 import csv
 import statistics
+import subprocess
+import sys
+import pandas as pd
+
 from typing import Tuple, List, Dict
 
-# Load our config file - just basic settings for the analysis
+
 def load_config(config_path="config.json"):
     with open(config_path, "r") as f:
         return json.load(f)
+
+def download_video_if_needed(config):
+    """Download video from YouTube if it doesn't exist locally."""
+    video_path = config.get("input_video_path", "input_video.mp4")
+    video_url = config.get("video_url", "")
+    
+    if os.path.exists(video_path):
+        print(f"Video already exists: {video_path}")
+        return video_path
+    
+    if not video_url:
+        print(f"No video URL provided and {video_path} doesn't exist")
+        return None
+    
+    print(f"Video not found. Attempting to download from: {video_url}")
+    
+    try:
+        # Use a list of potential downloaders
+        for downloader in ["yt-dlp", "youtube-dl"]:
+            try:
+               
+                module_name = downloader.replace('-', '_')
+                cmd = [sys.executable, "-m", module_name, "-f", "best[height<=720]", "-o", video_path, video_url]
+                
+                result = subprocess.run(cmd, capture_output=True, text=True, timeout=300)
+
+                if result.returncode == 0 and os.path.exists(video_path):
+                    print(f"Successfully downloaded video to: {video_path}")
+                    return video_path
+                else:
+                    
+                    print(f"'{downloader}' failed. This is likely a network/firewall issue.")
+                    print(f"--> yt-dlp error: {result.stderr.strip()}")
+                    continue
+
+            except (subprocess.TimeoutExpired, FileNotFoundError) as e:
+                print(f"Could not find or run '{downloader}'. Error: {e}")
+                continue
+
+        # If all downloaders failed
+        print("Automatic download failed. Please ensure yt-dlp is installed in your Python environment.")
+        print(f"You can try running this in your terminal: {sys.executable} -m pip install yt-dlp")
+        return None
+
+    except Exception as e:
+        print(f"An unexpected error occurred during download: {e}")
+        return None
 
 # Some helper functions for calculating angles and distances
 def calculate_angle(a, b, c):
@@ -146,7 +197,7 @@ def draw_bat_line_on_frame(frame, line_params, color=(0,128,255), thickness=2):
     return frame
 
 # Let's compare this player's performance to some reference data
-import pandas as pd
+
 def load_reference_stats(csv_path: str):
     """
     Load data from other players to compare against. CSV should have columns for each metric.
@@ -493,6 +544,8 @@ def analyze_cover_drive(config, downswing_start=None, impact_start=None, write_v
 
         elbow_angle = spine_lean = head_knee = foot_angle = np.nan
         wrist_pt = [np.nan, np.nan]
+        forearm_axis = np.nan
+        wrist_speed = 0.0
 
         if res.pose_landmarks:
             lm = res.pose_landmarks.landmark
@@ -521,6 +574,8 @@ def analyze_cover_drive(config, downswing_start=None, impact_start=None, write_v
             if prev_wrist_px is not None:
                 wrist_speed = np.linalg.norm(np.array(l_wr) - np.array(prev_wrist_px)) * fps
             prev_wrist_px = l_wr
+            # store wrist pixel location for later plotting
+            wrist_pt = [float(l_wr[0]), float(l_wr[1])]
 
             if write_video:
                 mp.solutions.drawing_utils.draw_landmarks(frame, res.pose_landmarks, mp_pose.POSE_CONNECTIONS)
@@ -604,6 +659,19 @@ def analyze_cover_drive(config, downswing_start=None, impact_start=None, write_v
 # This is where the script starts when you run it
 if __name__ == "__main__":
     cfg = load_config()
+    
+    # Try to download video if it doesn't exist
+    video_path = download_video_if_needed(cfg)
+    if not video_path:
+        print("Cannot proceed without video file. Please:")
+        print("   1. Install yt-dlp: pip install yt-dlp")
+        print("   2. Or manually download the video and name it 'input_video.mp4'")
+        print("   3. Or update the config.json with a valid video path")
+        sys.exit(1)
+    
+    # Update config with the actual video path
+    cfg["input_video_path"] = video_path
+    
     # First pass: just get the metrics without making a video
     M = analyze_cover_drive(cfg, write_video=False)
     ds, im = find_swing_phases_final(M)
